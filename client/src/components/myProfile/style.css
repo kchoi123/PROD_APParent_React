@@ -1,0 +1,12 @@
+/* This component is for Edit or View my Profile  */
+.btn-edit{
+    background: #5dc3d0;
+    color: whitesmoke; 
+    width: 25%;
+    font-weight: bold;
+}
+
+.profile-view {
+    width:100px;
+    height: 100px;
+}

@@ -1,0 +1,18 @@
+/* Stores all custom css for kid profile */
+#btn-save {
+	color: #176d88;
+}
+
+#btn-update {
+    background-color: green;
+    color: whitesmoke;
+    margin: 10px;
+    /* float: right;  */
+}
+
+#btn-warning {
+    background-color: orange;
+    color: black;
+    margin: 10px;
+    /* float: right;  */
+}
