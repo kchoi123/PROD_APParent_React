@@ -22,10 +22,10 @@ body:after {
 
 }
 
-#welcome-text {
+.welcome-text {
 	font-family: 'Artifika', serif;
 	font-size: 50px;
-	font-weight: 900
+	font-weight: 900; 
 }
 
 #welcome-subtext {
@@ -44,7 +44,7 @@ body:after {
   display: inline-block;
   text-decoration: none;
   background: #5dc3d0;
-  color: rgb(82, 142, 150);
+  color: #176e88;
 	width: 122px;
 	font-family: 'Artifika', serif;
   font-size: 20px;
@@ -64,6 +64,11 @@ body:after {
 .button:hover{
 	-webkit-transform: rotateY(360deg);
 	-ms-transform: rotateY(360deg);
-	transform: rotateY(360deg);
+  transform: rotateY(360deg);
+}
+
+.button:focus {
+  outline: none;
+  box-shadow: -1px 1px 0px 10px rgba(23,110,136,0.7);
 }
 

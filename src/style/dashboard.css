@@ -1,0 +1,22 @@
+.welcome-text {
+	font-family: 'Artifika', serif;
+	font-size: 50px;
+	font-weight: 900; 
+}
+
+.title-card {
+	font-family: 'Artifika', serif;
+	font-weight: 700;
+}
+
+.about-text {
+	font-size: 1.5rem;
+}
+
+.link-us{
+	font-size: 1.1rem;
+}
+
+.pic-us {
+	width: 85%;
+}

@@ -6,13 +6,18 @@ import ErrorMessage from "../errorMessage";
 import "./style.css";
 import API from "../../utils/API";
 import gradeLevel from "../../gradeLevel.json";
+import Dropzone from "../drop-zone";
 
-const statesList = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
+
+const statesList = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"];
 
 // define a class SignUp to create the component
 class SignUp extends Component {
 
     state = {
+        sizeDropdownState: 1,
+        sizeDropdownGrade: 1,
+        sizeDropdownSchool: 1,
         allUsernames: [],
         allEmails: [],
         parentInfo:
@@ -54,7 +59,7 @@ class SignUp extends Component {
                     options: statesList
                 }
             ],
-        kidInfo: 
+        kidInfo:
             [
                 {
                     for: "name",
@@ -69,12 +74,12 @@ class SignUp extends Component {
                     options: gradeLevel
 
                 },
-                {   
+                {
                     for: "school",
                     label: "Which school does your kid go to?",
                     value: "1",
                     options: []
-                }    
+                }
             ],
         numberOfKid: 1,
         allKidsInfo: [],
@@ -89,6 +94,7 @@ class SignUp extends Component {
         passwordTooShort: false,
         usernameAlreadyExists: false,
         emailAlreadyExists: false,
+        emailNotCorrectFormat: false,
         addKid: false,
         addSchool: false,
         messageSchoolAdded: false
@@ -132,8 +138,17 @@ class SignUp extends Component {
         let copy = [...this.state.parentInfo]
         copy[key].value = value
         this.setState({
-            parentInfo: copy
+            parentInfo: copy,
+            sizeDropdownState: 1
         });
+    }
+
+    handleImageChange = (url) => {
+        let copy = [...this.state.parentInfo]
+        copy[3].value = url
+        this.setState({
+            parentInfo: copy
+        })
     }
 
     // to go to the second part of the registration once validating all the data related to the parents
@@ -144,36 +159,44 @@ class SignUp extends Component {
         if (this.state.parentInfo[0].value && this.state.parentInfo[1].value && this.state.parentInfo[2].value && this.state.parentInfo[3].value && this.state.parentInfo[4].value && this.state.parentInfo[5].value) {
             // if username doesn't already exist in the database
             if (this.state.allUsernames.indexOf(this.state.parentInfo[0].value) === -1) {
-                // if the email doesn't already exist in the database
-                if (this.state.allEmails.indexOf(this.state.parentInfo[2].value) === -1) {
-                    // if the password is at least 8 characters long
-                    if (this.state.parentInfo[1].value.length >= 8) {
-                        // display the second part of the form
-                        this.setState({
-                            firstStepRegistration: false
-                        });
-                        console.log("parent info: ", this.state.parentInfo);
-                    // if password too short
+                // if the email is in a correct format
+                if (/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(this.state.parentInfo[2].value)) {
+                    // if the email doesn't already exist in the database
+                    if (this.state.allEmails.indexOf(this.state.parentInfo[2].value) === -1) {
+                        // if the password is at least 8 characters long
+                        if (this.state.parentInfo[1].value.length >= 8) {
+                            // display the second part of the form
+                            this.setState({
+                                firstStepRegistration: false
+                            });
+                            console.log("parent info: ", this.state.parentInfo);
+                            // if password too short
+                        } else {
+                            // display error message
+                            this.setState({
+                                passwordTooShort: true
+                            });
+                        }
+                        // if the email is already present in the database
                     } else {
-                        // display error message
                         this.setState({
-                            passwordTooShort: true
+                            emailAlreadyExists: true
                         });
                     }
-                // if the email is already present in the database
+                    // if the email doesn't have the correct format
                 } else {
                     this.setState({
-                        emailAlreadyExists: true
+                        emailNotCorrectFormat: true
                     });
                 }
-            // if username is already present in the database
+                // if username is already present in the database
             } else {
                 // display error message
                 this.setState({
                     usernameAlreadyExists: true
                 });
-            }    
-        // if all the fields haven't been filled up
+            }
+            // if all the fields haven't been filled up
         } else {
             // display error message
             this.setState({
@@ -185,7 +208,7 @@ class SignUp extends Component {
     // to allow the parent to go back the first part of the registration
     handleGoBackButtonClick = event => {
         event.preventDefault();
-        
+
         this.setState({
             firstStepRegistration: true
         })
@@ -198,7 +221,9 @@ class SignUp extends Component {
         let copy = [...this.state.kidInfo]
         copy[key].value = value
         this.setState({
-            kidInfo: copy
+            kidInfo: copy,
+            sizeDropdownGrade: 1,
+            sizeDropdownSchool: 1
         });
     }
 
@@ -231,9 +256,9 @@ class SignUp extends Component {
                 messageSchoolAdded: false,
                 addSchool: false
             });
-        // otherwise will get error message that the parent has to fill up the fields
+            // otherwise will get error message that the parent has to fill up the fields
         } else {
-            this.setState({ 
+            this.setState({
                 hasError: true
             });
         }
@@ -258,7 +283,7 @@ class SignUp extends Component {
 
         // the parent has to enter info in every field to be able to submit form
         if (this.state.kidInfo[0].value && this.state.kidInfo[1].value && this.state.kidInfo[2].value) {
-  
+
             API.signup(
                 {
                     userName: this.state.parentInfo[0].value,
@@ -270,14 +295,14 @@ class SignUp extends Component {
                     allKidsInfo: this.state.allKidsInfo
                 }
             )
-            .then(res => {
-                window.location.reload()
-            })
-            .catch(err => console.log(err))
-        // otherwise will get error message that the parent has to fill up the fields
+                .then(res => {
+                    window.location.reload()
+                })
+                .catch(err => console.log(err))
+            // otherwise will get error message that the parent has to fill up the fields
         } else {
 
-            this.setState({ 
+            this.setState({
                 hasError: true
             })
         }
@@ -330,19 +355,21 @@ class SignUp extends Component {
             hasError: false,
             passwordTooShort: false,
             usernameAlreadyExists: false,
-            emailAlreadyExists: false
+            emailAlreadyExists: false,
+            emailNotCorrectFormat: false
         })
     }
 
     // to make the error message disappear after 2 seconds
     resetError = () => {
-        if (this.state.hasError || this.state.passwordTooShort || this.state.usernameAlreadyExists || this.state.emailAlreadyExists) {
+        if (this.state.hasError || this.state.passwordTooShort || this.state.usernameAlreadyExists || this.state.emailAlreadyExists || this.state.emailNotCorrectFormat) {
             setTimeout(() => {
                 this.setState({
                     hasError: false,
                     passwordTooShort: false,
                     usernameAlreadyExists: false,
                     emailAlreadyExists: false,
+                    emailNotCorrectFormat: false
                 })
             }, 2000)
         }
@@ -357,39 +384,87 @@ class SignUp extends Component {
                     <div>
                         {(this.state.hasError) ? (
                             <ErrorMessage
-                                message="Please fill up all the fields!"
+                                message="Please fill out all the fields!"
                                 handleCloseButtonClick={this.handleCloseButtonClick}
                             />
                         ) : (
-                            ""
-                        )}
+                                ""
+                            )}
                         {(this.state.passwordTooShort) ? (
                             <ErrorMessage
                                 message="Your password should be at least 8 characters long!"
                                 handleCloseButtonClick={this.handleCloseButtonClick}
                             />
                         ) : (
-                            ""
-                        )}
+                                ""
+                            )}
                         {(this.state.usernameAlreadyExists) ? (
                             <ErrorMessage
                                 message="Sorry, this username is already taken!"
                                 handleCloseButtonClick={this.handleCloseButtonClick}
                             />
                         ) : (
-                            ""
-                        )}
+                                ""
+                            )}
                         {(this.state.emailAlreadyExists) ? (
                             <ErrorMessage
                                 message="Sorry, a parent already registered with this email!"
                                 handleCloseButtonClick={this.handleCloseButtonClick}
                             />
                         ) : (
-                            ""
-                        )}
+                                ""
+                            )}
+                        {(this.state.emailNotCorrectFormat) ? (
+                            <ErrorMessage
+                                message="Please enter a correct email!"
+                                handleCloseButtonClick={this.handleCloseButtonClick}
+                            />
+                        ) : (
+                                ""
+                            )}
                         <FormAction>
                             {this.state.parentInfo.map((parentInfo, i) => {
-                                if (parentInfo.for !== "state") {
+                                if (parentInfo.for === "state") {
+                                    return (
+                                        <Dropdown
+                                            key={i}
+                                            data={i}
+                                            for={parentInfo.for}
+                                            label={parentInfo.label}
+                                            value={parentInfo.value}
+                                            handleChange={this.handleInputChangeParent}
+                                            size={this.state.sizeDropdownState}
+                                            onfocus={()=>{this.setState({sizeDropdownState: 5})}}
+                                            onblur={()=>{this.setState({sizeDropdownState: 1})}}
+                                        >
+                                            {parentInfo.options.map((state, j) => {
+                                                return (
+                                                    <OptionForDropdown option={state} value={state} key={j} />
+                                                )
+                                            })}
+                                        </Dropdown>
+                                    );
+                                    // return (
+                                    //     <FormLabel
+                                    //         key={i}
+                                    //         data={i}
+                                    //         for={parentInfo.for}
+                                    //         label={parentInfo.label}
+                                    //         placeholder={parentInfo.placeholder}
+                                    //         value={parentInfo.value}
+                                    //         handleChange={this.handleInputChangeParent}
+                                    //     />
+                                    // );
+                                } else if (parentInfo.for === "photo") {
+                                    return (
+                                        <div className="mb-3">
+                                            <label>Upload a profile picture (will be displayed)</label>
+                                            <Dropzone 
+                                            helper={this.handleImageChange}
+                                            />
+                                        </div>
+                                    )
+                                } else {
                                     return (
                                         <FormLabel
                                             key={i}
@@ -400,26 +475,26 @@ class SignUp extends Component {
                                             value={parentInfo.value}
                                             handleChange={this.handleInputChangeParent}
                                         />
-                                    );
-                                } else {
-                                    return (
-                                        <Dropdown
-                                            key={i}
-                                            data={i}
-                                            for={parentInfo.for}
-                                            label={parentInfo.label}
-                                            value={parentInfo.value}
-                                            handleChange={this.handleInputChangeParent}
-                                        >
-                                        {parentInfo.options.map((state, j) => {
-                                            return (
-                                                <OptionForDropdown option={state} value={state} key={j} />
-                                            )
-                                        })}
-                                        </Dropdown>
-                                    );  
+                                    )
+                                    // return (
+                                    //     <Dropdown
+                                    //         key={i}
+                                    //         data={i}
+                                    //         for={parentInfo.for}
+                                    //         label={parentInfo.label}
+                                    //         value={parentInfo.value}
+                                    //         handleChange={this.handleInputChangeParent}
+                                    //     >
+                                    //         {parentInfo.options.map((state, j) => {
+                                    //             return (
+                                    //                 <OptionForDropdown option={state} value={state} key={j} />
+                                    //             )
+                                    //         })}
+                                    //     </Dropdown>
+                                    // );
                                 }
                             })}
+
                         </FormAction>
                         <FormButton
                             nameButton="Continue"
@@ -464,6 +539,9 @@ class SignUp extends Component {
                                                     value={info.value}
                                                     disabled={this.state.disabled}
                                                     handleChange={this.handleInputChangeKid}
+                                                    size={(info.for === "grade") ? this.state.sizeDropdownGrade : this.state.sizeDropdownSchool}
+                                                    onfocus={(info.for === "grade") ? ()=>{this.setState({sizeDropdownGrade: 5})} : ()=>{this.setState({sizeDropdownSchool: 5})}}
+                                                    onblur={(info.for === "grade") ? ()=>{this.setState({sizeDropdownGrade: 1})} : ()=>{this.setState({sizeDropdownSchool: 1})}}
                                                 >
                                                     {info.options.map((item, j) => {
                                                         return (
@@ -505,6 +583,9 @@ class SignUp extends Component {
                                                     value={info.value}
                                                     disabled={this.state.disabled}
                                                     handleChange={this.handleInputChangeKid}
+                                                    size={this.state.sizeDropdownSchool}
+                                                    onfocus={()=>{this.setState({sizeDropdownSchool: 5})}}
+                                                    onblur={()=>{this.setState({sizeDropdownSchool: 1})}}
                                                 >
                                                     {info.options.map((item, j) => {
                                                         return (
@@ -518,7 +599,7 @@ class SignUp extends Component {
                                                 </Dropdown>
                                             )
                                         }
-                                    })}       
+                                    })}
                                 </div>
                             )}
                             {this.state.messageSchoolAdded ? (
@@ -526,9 +607,9 @@ class SignUp extends Component {
                             ) : (
                                 ""
                             )}
-                            <button className="mb-2 mt-2 font-weight-bold p-0" onClick={this.handleAddSchoolOption} style={{border: "none", background: "none", color: "#fca33d"}}>Didn't find your school? Click here to add it!</button>
+                            <button className="mb-2 mt-2 font-weight-bold p-0" onClick={this.handleAddSchoolOption} style={{ border: "none", background: "none", color: "#fca33d" }}>Didn't find your school? Click here to add it!</button>
                             {this.state.addSchool ? (
-                                <AddSchool 
+                                <AddSchool
                                     toUpdateSchoolList={this.updateSchoolList}
                                     toHideAddSchoolForm={this.hideAddSchoolForm}
                                 />
@@ -536,7 +617,7 @@ class SignUp extends Component {
                                 ""
                             )}
                         </FormAction>
-                        <hr style={{border: "1px solid #176d88"}}></hr>
+                        <hr style={{ border: "1px solid #176d88" }}></hr>
                         <FormButton
                             nameButton="Go back"
                             moreClass="go-back-btn mr-3 ml-4"
@@ -557,7 +638,6 @@ class SignUp extends Component {
                         />
                     </div>
                 )}
-
                 <FormMessage
                     message={this.state.formMessage.message}
                     path={this.props.path}

@@ -11,6 +11,7 @@ const statesList = ["Alabama","Alaska","Arizona","Arkansas","California","Colora
 class AddSchool extends Component {
 
     state = {
+        sizeDropdownState: 1,
         schoolInfo :
             [
                 {
@@ -54,7 +55,8 @@ class AddSchool extends Component {
         let copy = [...this.state.schoolInfo]
         copy[key].value = value
         this.setState({
-            schoolInfo: copy
+            schoolInfo: copy,
+            sizeDropdownState: 1
         });
     }
 
@@ -146,6 +148,9 @@ class AddSchool extends Component {
                                 label={schoolInfo.label}
                                 value={schoolInfo.value}
                                 handleChange={this.handleInputChangeSchool}
+                                size={this.state.sizeDropdownState}
+                                onfocus={()=>{this.setState({sizeDropdownState: 5})}}
+                                onblur={()=>{this.setState({sizeDropdownState: 1})}}
                             >
                                 {schoolInfo.options.map((state, j) => {
                                     return (
@@ -165,7 +170,6 @@ class AddSchool extends Component {
                 <FormButton 
                     nameButton="Nevermind, I found it!"
                     moreClass="nevermind-btn"
-                    icon=""
                     handleButtonClick={this.props.toHideAddSchoolForm}
                 />
             </div>

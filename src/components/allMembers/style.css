@@ -22,11 +22,16 @@
     }  
 }
 
+* {
+    font-family: 'Artifika', serif;
+}
+
 #allmembers-title {
     font-weight: 700;
     font-family: 'Artifika', serif;
 }
 
-#each-member {
+#each-member, .no-result-message {
     font-family: 'Artifika', serif;
 }
+

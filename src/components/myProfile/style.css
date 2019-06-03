@@ -1,12 +1,22 @@
 /* This component is for Edit or View my Profile  */
-.btn-edit{
-    background: #5dc3d0;
-    color: whitesmoke; 
-    width: 25%;
-    font-weight: bold;
-}
-
 .profile-view {
     width:100px;
     height: 100px;
+    box-shadow: rgba(61, 61, 61, 0.719) .2rem .2rem .1rem;
+}
+
+.btn-edit{
+    background: #5dc3d0;
+    color: whitesmoke;
+}
+
+.card-title {
+    color: #176d88;
+    font-weight: 900;
+    font-size: 2rem;
+    font-family: 'Artifika', serif;
+}
+
+.title-for-form, .btn-edit, .btn-success, .btn-secondary, .no-kid-message {
+    font-family: 'Artifika', serif;
 }

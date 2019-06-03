@@ -1,0 +1,17 @@
+.original-pic{
+    max-width: 15rem;
+    overflow: hidden;
+    float: left;
+    margin-bottom: 1.5rem;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.bigger-pic {
+    position: fixed;
+    z-index: 3;
+    top: 15%;
+    left: 15%;
+    width: 50%;
+    cursor: pointer;
+}

@@ -1,18 +1,14 @@
 /* Stores all custom css for kid profile */
-#btn-save {
-	color: #176d88;
-}
-
-#btn-update {
-    background-color: green;
+.edit-kid-btn{
+    background-color: #5dc3d0;
     color: whitesmoke;
-    margin: 10px;
-    /* float: right;  */
 }
 
-#btn-warning {
-    background-color: orange;
-    color: black;
-    margin: 10px;
-    /* float: right;  */
+.remove-kid-btn {
+    background-color: rgb(248, 108, 43);
+    color: whitesmoke;
+}
+
+.kid-section-title {
+    font-size: 1.8rem;
 }

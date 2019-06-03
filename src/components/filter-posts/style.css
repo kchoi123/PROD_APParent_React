@@ -1,0 +1,38 @@
+#filter-text {
+    display: inline !important;
+}
+
+.event-btn {
+    background-color: coral;
+    color: peachpuff;
+}
+
+.advice-btn {
+    background-color: #8c3bbb;
+    color: plum;
+}
+
+.free-btn {
+    background-color: #32a6a4;
+    color: paleturquoise;
+}
+
+.onSale-btn {
+    background-color: #3f9859;
+    color: palegreen;
+}
+
+.question-btn {
+    background-color: #e2b932;
+    color: palegoldenrod;
+}
+
+.recent-btn {
+    background-color: rgb(245, 99, 89);
+    color: pink;
+}
+
+.old-btn {
+    background-color: #91501c;
+    color: bisque;
+}

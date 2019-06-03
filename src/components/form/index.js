@@ -14,13 +14,13 @@ export function FormContainer({ children }) {
 
 export function FormTitle(props) {
     return (
-        <h1 className="text-center mb-3"><i className={props.icon}></i> {props.title}</h1>
+        <h1 className={"text-center mb-3 title-for-form " + props.moreClass}><i className={props.icon}></i> {props.title}</h1>
     )
 };
 
 export function FormAction(props) {
     return (
-        <form action={props.route} method="POST">
+        <form onSubmit={props.submit}>
             {props.children}
         </form>
     )
@@ -48,7 +48,7 @@ export function Dropdown(props){
     return (
         <div className="form-group text-left">
             <label for={props.for}>{props.label}</label>
-            <select data-id={props.data} disabled={props.disabled} value={props.value} className="form-control" id={props.for} name={props.for} onChange={props.handleChange}>
+            <select data-id={props.data} disabled={props.disabled} value={props.value} size={props.size} onFocus={props.onfocus} onBlur={props.onblur} className="form-control" id={props.for} name={props.for} onChange={props.handleChange}>
                 {props.children}
             </select>
         </div>
@@ -78,17 +78,17 @@ export function FormMessage(props) {
 export function CommentDisplay(props) {
     return (
         <div>
-        <p className="lead mt-4">
-        <label for={props.for}>{props.posterName}:</label>
+        <p className="lead mt-4 comment-text">
+        <label for={props.for} className="label-comment font-weight-bold">{props.posterName}:</label>
             {" "}{props.comment}
         </p>
-        <p>Last Updated:{props.updatedAt}</p>
+        <p>posted {props.updatedAt}</p>
         </div>
     )
 }
 
 export function CommentSubmitButton(props) {
     return (
-        <button type="submit" className="btn comment-button" onClick={props.handleButtonClick}>Submit Comment </button>
+        <button type="submit" className="btn comment-button font-weight-bold" onClick={props.handleButtonClick}>Submit Comment </button>
     )
 }

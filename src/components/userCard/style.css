@@ -7,3 +7,7 @@
    font-size:24px; 
    color:red; 
 }
+
+.chat-btn, .parent-info {
+    font-family: 'Artifika', serif;
+}

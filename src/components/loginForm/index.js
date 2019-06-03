@@ -38,7 +38,7 @@ class LoginForm extends Component {
         })
     }
 
-    
+
 
     handleSubmitButtonClick = event => {
         event.preventDefault();
@@ -53,7 +53,7 @@ class LoginForm extends Component {
                     if (res.data.status === "success") {
                         window.location.reload()
                     }
-                    else if (res.data.status === "unsuccessful"){
+                    else if (res.data.status === "unsuccessful") {
                         this.setState(
                             { hasError: true }
                         )
@@ -79,13 +79,13 @@ class LoginForm extends Component {
     }
 
     resetError = () => {
-        if(this.state.hasError){
-        setTimeout(()=>{
-            this.setState({
-                hasError: false
-            })
-        }, 2000)
-    }
+        if (this.state.hasError) {
+            setTimeout(() => {
+                this.setState({
+                    hasError: false
+                })
+            }, 2000)
+        }
     }
 
 
@@ -100,7 +100,9 @@ class LoginForm extends Component {
                     />) :
                     ("")
                 }
-                <FormAction>
+                <FormAction
+                    submit={this.handleSubmitButtonClick}
+                >
                     {this.state.userInfo.map((info, i) => {
 
                         return (
@@ -115,19 +117,21 @@ class LoginForm extends Component {
                         );
                     }
                     )}
+
+                    <FormMessage
+                        message={this.state.formMessage.message}
+                        path={this.props.path}
+                        action={this.state.formMessage.action}
+                        id={this.state.formMessage.alt}
+                    />
+                    <FormButton
+                        nameButton="Submit"
+                        moreClass="login-button"
+                        icon="fas fa-sign-in-alt"
+                        handleButtonClick={this.handleSubmitButtonClick}
+                    />
                 </FormAction>
-                <FormMessage
-                    message={this.state.formMessage.message}
-                    path={this.props.path}
-                    action={this.state.formMessage.action}
-                    id={this.state.formMessage.alt}
-                />
-                <FormButton
-                    nameButton="Submit"
-                    moreClass="login-button"
-                    icon="fas fa-sign-in-alt"
-                    handleButtonClick={this.handleSubmitButtonClick}
-                />
+
             </div>
         )
     }

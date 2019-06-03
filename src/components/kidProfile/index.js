@@ -6,23 +6,32 @@ import "./style.css";
 
 class KidProfile extends Component {
     state = {
+        sizeDropdownSchool: 1,
+        sizeDropdownGrade: 1,
         disabled: true,
+        deleteKidInfo: false,
+        kidOriginalInfo: 
+            {
+                name: this.props.name,
+                gradeLevel: this.props.grade,
+                schoolId: this.props.school
+            },
         kidInfo:
             [
                 {
                     for: "name",
-                    label: "Please Update Child's Name",
+                    label: "Your kid's name",
                     value: this.props.name,
                 },
                 {
                     for: "grade",
-                    label: "Current Grade kid is in :",
+                    label: "Your kid's grade",
                     value: this.props.grade,
                     options: gradeLevel
                 },
                 {
                     for: "school",
-                    label: "Current School :",
+                    label: "Your kid's school",
                     value: this.props.school,
                     options: []
                 }
@@ -36,7 +45,9 @@ class KidProfile extends Component {
         let copy = [...this.state.kidInfo]
         copy[key].value = value
         this.setState({
-            kidInfo: copy
+            kidInfo: copy,
+            sizeDropdownSchool: 1,
+            sizeDropdownGrade: 1
         })
     }
 
@@ -47,8 +58,10 @@ class KidProfile extends Component {
         })
     }
 
+    // update kid info without reloading the page
     handleUpdateButtonClick = event => {
         event.preventDefault()
+
         const kidUpdatedData = {
             name: this.state.kidInfo[0].value,
             gradeLevel: this.state.kidInfo[1].value,
@@ -57,31 +70,51 @@ class KidProfile extends Component {
 
         console.log("Kid Details ", kidUpdatedData, "ID", this.state.kidId);
 
-        //Updates the kid profile 
+        // update the kid profile without reloading the page
         API.updateKidForAParent(kidUpdatedData, this.state.kidId)
             .then(res => {
-                console.log("Kid data - upd", res);
-                window.location.reload();
+                // console.log("Kid data - upd", res);
+                this.setState({
+                    kidOriginalInfo: kidUpdatedData,
+                    sizeDropdownSchool: 1,
+                    sizeDropdownGrade: 1,
+                    disabled: true
+                })
             })
             .catch(err => console.log(err));
     }
 
-    handleDeleteInfo = event => {
+    // delete kid info and do not display the form for the kid that has been deleted
+    // without reloading the page
+    handleRemoveButtonClick = event => {
         event.preventDefault();
         console.log("Delete KID INFO");
         API.deleteKidForAParent(this.state.kidId)
             .then(res => {
                 console.log("Kid deleted");
-                window.location.reload();
+                this.setState({
+                    deleteKidInfo: true
+                })
+                // window.location.reload();
             })
             .catch(err => console.log(err));
     }
-    // Reloading the page to redirect to dashboard 
-    handleReturnBack = event => {
+
+    // Repopulate the input fields with the previous parent data
+    handleCancelButtonClick = event => {
         event.preventDefault();
-        console.log("redirect page to dashboard");
-        window.location.reload();
-       
+
+        let copyKidInfo = [...this.state.kidInfo];
+        copyKidInfo[0].value = this.state.kidOriginalInfo.name;
+        copyKidInfo[1].value = this.state.kidOriginalInfo.gradeLevel;
+        copyKidInfo[2].value = this.state.kidOriginalInfo.schoolId;
+
+        this.setState({
+            kidInfo: copyKidInfo,
+            sizeDropdownSchool: 1,
+            sizeDropdownGrade: 1,
+            disabled: true
+        });
     }
 
     componentDidMount() {
@@ -101,82 +134,108 @@ class KidProfile extends Component {
     }
 
     render() {
-        return (
-            <div>
-                <FormTitle
-                    title="View Kid Info"
-                />
-                <FormAction>
-                    {this.state.kidInfo.map((info, i) => {
-                        if (info.for === "name") {
-                            return (
-                                <FormLabel
-                                    key={i}
-                                    data={i}
-                                    for={info.for}
-                                    label={info.label}
-                                    value={info.value}
-                                    disabled={this.state.disabled}
-                                    handleChange={this.handleInputChange}
-                                />
-                            )
-                        }
-                        else {
-                            return (
-                                <Dropdown
-                                    key={i}
-                                    data={i}
-                                    for={info.for}
-                                    label={info.label}
-                                    value={info.value}
-                                    disabled={this.state.disabled}
-                                    handleChange={this.handleInputChange}
-                                >
-                                    {info.options.map((item, j) => {
-                                        return (
-                                            <OptionForDropdown
-                                                option={item.name}
-                                                value={item.id}
-                                                // selected value={kid.schoolId}
-                                                key={j}
-                                            />
-                                        )
-                                    })}
-                                </Dropdown>
-                            )
-                        }
-
-                    })}
-
-                    {this.state.disabled ? (
-                        <FormButton
-                            nameButton=" Edit Kid Info"
-                            handleButtonClick={this.handleEditButtonClick}
-                            moreClass="btn-edit far fa-edit"
+        if (!this.state.deleteKidInfo) {
+            return (
+                <div>
+                    {this.state.disabled ?
+                        <FormTitle
+                            title={`View ${this.state.kidOriginalInfo.name}'s Info`}
+                            moreClass="kid-section-title"
+                            icon="fas fa-eye"
                         />
-                    ) :
-                        (
+                        :
+                        <FormTitle
+                            title={`Update ${this.state.kidOriginalInfo.name}'s Info`}
+                            moreClass="kid-section-title"
+                            icon="fas fa-edit"
+                        />
+                    }
+                    <FormAction>
+                        {this.state.kidInfo.map((info, i) => {
+                            if (info.for === "name") {
+                                return (
+                                    <FormLabel
+                                        key={i}
+                                        data={i}
+                                        for={info.for}
+                                        label={info.label}
+                                        value={info.value}
+                                        disabled={this.state.disabled}
+                                        handleChange={this.handleInputChange}
+                                    />
+                                )
+                            }
+                            else {
+                                return (
+                                    <Dropdown
+                                        key={i}
+                                        data={i}
+                                        for={info.for}
+                                        label={info.label}
+                                        value={info.value}
+                                        disabled={this.state.disabled}
+                                        handleChange={this.handleInputChange}
+                                        size={(info.for === "grade") ? this.state.sizeDropdownGrade : this.state.sizeDropdownSchool}
+                                        onfocus={(info.for === "grade") ? ()=>{this.setState({sizeDropdownGrade: 5})} : ()=>{this.setState({sizeDropdownSchool: 5})}}
+                                        onblur={(info.for === "grade") ? ()=>{this.setState({sizeDropdownGrade: 1})} : ()=>{this.setState({sizeDropdownSchool: 1})}}
+                                    >
+                                        {info.options.map((item, j) => {
+                                            return (
+                                                <OptionForDropdown
+                                                    option={item.name}
+                                                    value={item.id}
+                                                    // selected value={kid.schoolId}
+                                                    key={j}
+                                                />
+                                            )
+                                        })}
+                                    </Dropdown>
+                                )
+                            }
+    
+                        })}
+                        {this.state.disabled ? (
                             <div>
                                 <FormButton
-                                    nameButton=" Update Child"
-                                    moreClass="btn-success far fa-save mr-2"
+                                    nameButton={`Edit ${this.state.kidOriginalInfo.name}'s info`}
+                                    handleButtonClick={this.handleEditButtonClick}
+                                    moreClass="edit-kid-btn mr-2 mb-4"
+                                    icon="far fa-edit"
+                                />
+                                <FormButton
+                                    nameButton={`Remove ${this.props.name}'s info`}
+                                    moreClass="remove-kid-btn mr-2 mb-4"
+                                    icon="fas fa-eraser"
+                                    handleButtonClick={this.handleRemoveButtonClick}
+                                />
+                            </div>
+                        ) : (
+                            <div>
+                                <FormButton
+                                    nameButton={`Update ${this.state.kidOriginalInfo.name}'s info`}
+                                    moreClass="btn-success mr-2 mb-4"
+                                    icon="far fa-save"
                                     handleButtonClick={this.handleUpdateButtonClick}
                                 />
                                 <FormButton
-                                    nameButton="Remove Child"
-                                    moreClass="btn-warning fas fa-eraser mr-2"
-                                    handleButtonClick={this.handleDeleteInfo}
-                                />
-                                 <FormButton
                                     nameButton="Cancel"
-                                    moreClass="btn-secondary mr-2 btn-sm"
-                                    handleButtonClick={this.handleReturnBack}
+                                    moreClass="btn-secondary mr-2 mb-4"
+                                    handleButtonClick={this.handleCancelButtonClick}
+                                    disabled={this.state.disabled}
+                                    icon="fas fa-backspace"
                                 />
                             </div>
                         )}
-                </FormAction>
-            </div>
-        )
+                    </FormAction>
+                </div>
+            )
+
+        } else {
+            return (
+                <div></div>
+            )
+        }
+        
     }
 }
 

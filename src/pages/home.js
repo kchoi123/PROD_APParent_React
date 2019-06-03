@@ -31,7 +31,7 @@ class Home extends Component {
         return (
             <div className="container main">
                 <div className="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                    <div className="modal-dialog" role="document">
+                    <div className="modal-dialog modal-dialog-scrollable" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
                                 <FormTitle
@@ -58,7 +58,7 @@ class Home extends Component {
                 </div>
 
                 <img className="logo" src="/images/logo-only-color.png" alt="logo" />
-                <h1 id="welcome-text" className="text-center mt-3">Welcome to APP@rent!</h1>
+                <h1 className="text-center mt-3 welcome-text">Welcome to APP@rent!</h1>
                 <p id="welcome-subtext" className="text-center font-weight-bold">An app to meet other parents and share information!</p>
 
                 <div className="row">
