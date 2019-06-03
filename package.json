@@ -4,15 +4,20 @@
   "private": true,
   "proxy": "http://ec2-13-52-54-127.us-west-1.compute.amazonaws.com:3001",
   "dependencies": {
+    "@pusher/chatkit-client": "^1.5.0",
+    "@pusher/chatkit-server": "^1.1.0",
     "axios": "^0.18.0",
+    "moment": "^2.24.0",
     "react": "^16.6.3",
+    "react-burger-menu": "^2.6.10",
     "react-dom": "^16.6.3",
     "react-dropzone": "^10.1.5",
     "react-flip-toolkit": "^6.6.3",
     "react-linkify": "^1.0.0-alpha",
     "react-router-dom": "^5.0.0",
     "react-scripts": "^2.1.1",
-    "react-sidebar": "^3.0.2"
+    "react-sidebar": "^3.0.2",
+    "superagent": "^5.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
