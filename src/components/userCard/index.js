@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import API from "../../utils/API";
 import "./style.css";
 
-
 class userCard extends Component {
     //Setting all default values 
     state = {
@@ -31,7 +30,7 @@ class userCard extends Component {
                 <img src={this.props.photoLink ? (this.props.photoLink) : ("http://lorempixel.com/125/125/people/2/cc")} className="card-img-top userImg" alt={this.props.userName} />
                 <div className="card-body">
                     <h2 className="card-title text-info parent-info">{this.props.userName}</h2>
-                    <h5 className="card-text parent-info"><b>Email:</b> {this.props.email}</h5>
+                    {/* <h5 className="card-text parent-info"><b>Email:</b> {this.props.email}</h5> */}
                     <h5 className="card-text parent-info"><b>Resides in:</b> {this.props.city} | <b> State :</b> {this.props.state}</h5>
                     <h4 className="card-body text-info parent-info m-1 p-1">Kid(s) Information <i className="fa fa-child"></i>
                         <i className="fa fa-child big-child" ></i>: </h4>
@@ -59,7 +58,7 @@ class userCard extends Component {
                             })) : (<div>Infant - Preschooler</div>)
 
                         }</h5>
-                    <button className="btn btn-success btn-lg mt-1 chat-btn"><i className="far fa-comments"></i> Chat</button>
+ 
                 </div>
             </div>
 

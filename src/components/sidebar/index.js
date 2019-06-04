@@ -18,6 +18,9 @@ function SideBar(props) {
                 <button className="btn btn-lg menu-item"  data-content="writePost" onClick={props.handleClick}>
                     Write a post
                 </button>
+                <button className="btn btn-lg menu-item"  data-content="chatRoom" onClick={props.handleClick}>
+                    Chat Room
+                </button>
                 <button className="btn btn-lg menu-item" data-content="aboutUs" onClick={props.handleClick}>
                     About us!
                 </button>

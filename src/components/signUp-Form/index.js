@@ -6,7 +6,12 @@ import ErrorMessage from "../errorMessage";
 import "./style.css";
 import API from "../../utils/API";
 import gradeLevel from "../../gradeLevel.json";
-import Dropzone from "../drop-zone";
+import Dropzone from "../drop-zone"
+import { default as Chatkit } from '@pusher/chatkit-server';
+const chatkit = new Chatkit({
+    instanceLocator: "v1:us1:634e15b3-fb2d-47cd-b7aa-3d8749095de8",
+    key: "616ff3c1-c8f5-4597-b5bb-f1e293f6a4f7:nYsoZ6crOrC7i3P/zpgpOaMIJQtvcuDs86pRhFWAuyw="
+})
 
 
 const statesList = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"];
@@ -102,18 +107,18 @@ class SignUp extends Component {
 
     componentDidMount() {
         // retrieves all the schools
-        API.getAllSchools()
-            .then(
-                res => {
-                    console.log(res.data);
-                    let copy = [...this.state.kidInfo];
-                    copy[2].options = res.data;
-                    this.setState({
-                        kidInfo: copy
-                    })
-                }
-            )
-            .catch(err => console.log(err));
+        // API.getAllSchools()
+        //     .then(
+        //         res => {
+        //             console.log(res.data);
+        //             let copy = [...this.state.kidInfo];
+        //             copy[2].options = res.data;
+        //             this.setState({
+        //                 kidInfo: copy
+        //             })
+        //         }
+        //     )
+        //     .catch(err => console.log(err));
 
         // get the info of the parents already in the database - to check username and email
         API.searchAllParentsInDB()
@@ -165,6 +170,19 @@ class SignUp extends Component {
                     if (this.state.allEmails.indexOf(this.state.parentInfo[2].value) === -1) {
                         // if the password is at least 8 characters long
                         if (this.state.parentInfo[1].value.length >= 8) {
+                            // retrieves all the schools for the state of the parent
+                            API.getAllSchoolsByState(this.state.parentInfo[5].value)
+                                .then(
+                                    res => {
+                                        console.log(res.data);
+                                        let copy = [...this.state.kidInfo];
+                                        copy[2].options = res.data;
+                                        this.setState({
+                                            kidInfo: copy
+                                        })
+                                    }
+                                )
+                                .catch(err => console.log(err));
                             // display the second part of the form
                             this.setState({
                                 firstStepRegistration: false
@@ -296,7 +314,13 @@ class SignUp extends Component {
                 }
             )
                 .then(res => {
-                    window.location.reload()
+                    chatkit.createUser({
+                        id: res.data.userId.toString(),
+                        name: res.data.userName
+                    }).then(() => {
+                        console.log("chat user created")
+                        window.location.reload()
+                    })
                 })
                 .catch(err => console.log(err))
             // otherwise will get error message that the parent has to fill up the fields
@@ -330,7 +354,10 @@ class SignUp extends Component {
 
     // function to update the school list once/if a parent has created one
     updateSchoolList = () => {
-        API.getAllSchools()
+        // API.getAllSchools()
+        console.log("Signup Parent - State Info", this.state.parentInfo[5].value);
+        // re-populates all the schools for the state of the parent
+        API.getAllSchoolsByState(this.state.parentInfo[5].value)
             .then(
                 res => {
                     console.log(res.data);
@@ -457,10 +484,10 @@ class SignUp extends Component {
                                     // );
                                 } else if (parentInfo.for === "photo") {
                                     return (
-                                        <div className="mb-3">
+                                        <div className="mb-3" key={i}>
                                             <label>Upload a profile picture (will be displayed)</label>
                                             <Dropzone 
-                                            helper={this.handleImageChange}
+                                                helper={this.handleImageChange}
                                             />
                                         </div>
                                     )

@@ -1,0 +1,59 @@
+@import url("https://fonts.googleapis.com/css?family=Artifika");
+
+.card-header .chatRoomHeader {
+    font-family: 'Artifika', serif;
+}
+
+.currentUserMsg {
+    float: left;
+    clear: both;
+    width: 40%;
+    padding: .1rem;;
+    overflow-y: auto;
+    background: #5dc3d0;
+    color: white
+}
+
+.chatTargetMsg {
+    float: right;
+    clear:both;
+    width: 40%;
+    padding: 0.1rem;
+    overflow-y: auto;
+    background: rgb(195, 195, 195);
+    color: white;
+}
+
+.message-content {
+    position: relative;
+    left: 2rem
+}
+
+.chatTarget {
+    min-width: 12rem;
+    background: teal
+}
+
+.message-timestamp {
+    font-size: 0.7rem;
+    color: grey
+}
+
+.chatList {
+    max-height: 30rem;
+    overflow: scroll;
+}
+
+.message-display {
+    height: 30rem;
+    overflow: scroll;
+
+}
+
+.message-direction {
+    font-size: 3.5em;
+}
+
+.direction-text {
+    font-size: 3.5rem
+}

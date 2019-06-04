@@ -58,13 +58,13 @@ class MyDropzone extends Component {
             >
               <input {...getInputProps()} />
               {
-                <p class="dropzone-text">Drag an image here or click here to upload</p>
+                <p className="dropzone-text">Drag an image here or click here to upload</p>
               }
               <div>
                 {this.state.uploadedFileCloudinaryUrl === '' ? null :
                   <div>
                     <p>Preview of: {this.state.uploadedFile.name}</p>
-                    <img className="pic-preview" src={this.state.uploadedFileCloudinaryUrl} />
+                    <img className="pic-preview" alt="preview" src={this.state.uploadedFileCloudinaryUrl} />
                   </div>}
               </div>
             </div>
