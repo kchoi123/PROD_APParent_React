@@ -36,7 +36,8 @@ class KidProfile extends Component {
                     options: []
                 }
             ], 
-            kidId: this.props.kidId
+            kidId: this.props.kidId,
+            parentState: this.props.parentState
     }
 
     handleInputChange = event => {
@@ -120,7 +121,10 @@ class KidProfile extends Component {
     componentDidMount() {
         // console.log("Grade", this.props.grade); 
         // console.log("Kid ID", this.props.kidId); 
-        API.getAllSchools()
+       // API.getAllSchools()
+       console.log("Parent State passed", this.state.parentState);
+
+       API.getAllSchoolsByState(this.state.parentState)
             .then(
                 res => {
                     let copy = [...this.state.kidInfo]

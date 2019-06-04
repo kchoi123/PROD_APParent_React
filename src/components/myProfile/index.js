@@ -244,6 +244,7 @@ class MyProfile extends Component {
                                         grade={kid.gradeLevel}
                                         school={kid.schoolId}
                                         kidId={kid.id}
+                                        parentState={this.props.state}
                                     />
                                 )
                             })}
