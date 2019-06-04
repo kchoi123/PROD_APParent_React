@@ -28,7 +28,13 @@ export default {
     },
     //search all members for a School
     searchAllMembersForASchool: function (data) {
-        return axios.get("/api/parents/school/" + data);
+        console.log("Api data passing ", data); 
+        return axios.get("/api/parents/school/", data);
+    },
+     //search all members for a city
+     searchAllMembersForACity: function (data) {
+        console.log("Api data passing ", data); 
+        return axios.get("/api/parents/city/"+data);
     },
     
     //See Logged in user data 

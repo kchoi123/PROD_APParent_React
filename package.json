@@ -2,7 +2,7 @@
   "name": "sern",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://ec2-13-52-54-127.us-west-1.compute.amazonaws.com:3001",
+  "proxy": "http://node.apparent.ga:3001",
   "dependencies": {
     "@pusher/chatkit-client": "^1.5.0",
     "@pusher/chatkit-server": "^1.1.0",

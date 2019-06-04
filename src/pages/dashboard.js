@@ -6,6 +6,7 @@ import WritePost from "../components/write-post";
 import AllMembers from "../components/allMembers";
 import MyProfile from "../components/myProfile";
 import NavBar from "../components/nav";
+import {ChatRoom} from "../components/chatRoom"
 import API from "../utils/API";
 import "../style/dashboard.css";
 // import { stat } from "fs";
@@ -214,28 +215,28 @@ class Dashboard extends Component {
                   <p className="card-text about-text"><strong style={{"color": "#176d88"}}>APP@rent</strong> was built by Namita - a happy-parent of a little boy and inspiration of the project - and Sophie, Kevin and Samuel - parents in training... with their pets!!</p>
                   <div className="row text-center m-3">
                     <div className="col-3 text-center mt-3">
-                      <img className="img-thumbnail img-fluid mb-3 pic-us" src="https://avatars2.githubusercontent.com/u/39390897?s=460&v=4" alt="namita-picture"/>
-                      <br></br><a className="link-us font-weight-bold" href="https://github.com/NVK2016" target="_blank">GitHub</a>
-                      <br></br><a className="link-us font-weight-bold" href="https://www.linkedin.com/in/namita-shenai" target="_blank">LinkedIn</a>
-                      <br></br><a className="link-us font-weight-bold" href="https://namitashenai-portfolio.herokuapp.com/" target="_blank">Portfolio</a>
+                      <img className="img-thumbnail img-fluid mb-3 pic-us" src="https://avatars2.githubusercontent.com/u/39390897?s=460&v=4" alt="namita"/>
+                      <br></br><a className="link-us font-weight-bold" href="https://github.com/NVK2016" target="_blank" rel="noopener noreferrer">GitHub</a>
+                      <br></br><a className="link-us font-weight-bold" href="https://www.linkedin.com/in/namita-shenai" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                      <br></br><a className="link-us font-weight-bold" href="https://namitashenai-portfolio.herokuapp.com/" target="_blank" rel="noopener noreferrer">Portfolio</a>
                     </div>
                     <div className="col-3 text-center mt-3">
-                      <img className="img-thumbnail img-fluid mb-3 pic-us" src="https://avatars1.githubusercontent.com/u/47410186?s=460&v=4" alt="sophie-picture"/>
-                      <br></br><a className="link-us font-weight-bold" href="https://github.com/SophM" target="_blank">GitHub</a>
-                      <br></br><a className="link-us font-weight-bold" href="https://www.linkedin.com/in/sophie-m-571325176" target="_blank">LinkedIn</a>
-                      <br></br><a className="link-us font-weight-bold" href="https://www.sophiemallez.com" target="_blank">Portfolio</a>
+                      <img className="img-thumbnail img-fluid mb-3 pic-us" src="https://avatars1.githubusercontent.com/u/47410186?s=460&v=4" alt="sophie"/>
+                      <br></br><a className="link-us font-weight-bold" href="https://github.com/SophM" target="_blank" rel="noopener noreferrer">GitHub</a>
+                      <br></br><a className="link-us font-weight-bold" href="https://www.linkedin.com/in/sophie-m-571325176" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                      <br></br><a className="link-us font-weight-bold" href="https://www.sophiemallez.com" target="_blank" rel="noopener noreferrer">Portfolio</a>
                     </div>
                     <div className="col-3 text-center mt-3">
-                      <img className="img-thumbnail img-fluid mb-3 pic-us" src="https://avatars3.githubusercontent.com/u/41413295?s=400&v=4" alt="kevin-picture"/>
-                      <br></br><a className="link-us font-weight-bold" href="https://github.com/kchoi123" target="_blank">GitHub</a>
-                      <br></br><a className="link-us font-weight-bold" href="https://www.linkedin.com/in/kevin-choi-5b59aa40" target="_blank">LinkedIn</a>
-                      <br></br><a className="link-us font-weight-bold" href="https://kchoi.co" target="_blank">Portfolio</a>
+                      <img className="img-thumbnail img-fluid mb-3 pic-us" src="https://avatars3.githubusercontent.com/u/41413295?s=400&v=4" alt="kevin"/>
+                      <br></br><a className="link-us font-weight-bold" href="https://github.com/kchoi123" target="_blank" rel="noopener noreferrer">GitHub</a>
+                      <br></br><a className="link-us font-weight-bold" href="https://www.linkedin.com/in/kevin-choi-5b59aa40" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                      <br></br><a className="link-us font-weight-bold" href="https://kchoi.co" target="_blank" rel="noopener noreferrer">Portfolio</a>
                     </div>
                     <div className="col-3 text-center mt-3">
-                      <img className="img-thumbnail img-fluid mb-3 pic-us" src="https://avatars2.githubusercontent.com/u/45929868?s=460&v=4" alt="samuel-picture"/>
-                      <br></br><a className="link-us font-weight-bold" href="https://github.com/yusungsamuel" target="_blank">GitHub</a>
-                      <br></br><a className="link-us font-weight-bold" href="https://www.linkedin.com/in/samuel-yu-1431b8103" target="_blank">LinkedIn</a>
-                      <br></br><a className="link-us font-weight-bold" href="https://yusungsamuel.github.io/react-portfolio/" target="_blank">Portfolio</a>
+                      <img className="img-thumbnail img-fluid mb-3 pic-us" src="https://avatars2.githubusercontent.com/u/45929868?s=460&v=4" alt="samuel"/>
+                      <br></br><a className="link-us font-weight-bold" href="https://github.com/yusungsamuel" target="_blank" rel="noopener noreferrer">GitHub</a>
+                      <br></br><a className="link-us font-weight-bold" href="https://www.linkedin.com/in/samuel-yu-1431b8103" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                      <br></br><a className="link-us font-weight-bold" href="https://yusungsamuel.github.io/react-portfolio/" target="_blank" rel="noopener noreferrer">Portfolio</a>
                     </div>
                   </div>
                 </div>
@@ -244,6 +245,20 @@ class Dashboard extends Component {
           </div>
         </div>
       );
+    }
+    else if (this.state.pageWanted === "chatRoom"){
+      return (
+        <div>
+        <NavBar
+            logout={this.handleLogOut}
+        />
+        <Sidebar
+            handleClick={this.handleClickOnSideBar}
+            logout={this.handleLogOut}
+        />
+        <ChatRoom/>
+        </div>
+      )
     }
   }
 }

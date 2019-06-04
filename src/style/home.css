@@ -38,6 +38,14 @@ body:after {
 	position: relative;
 	left:35%;
   opacity: 1;
+  border-radius: 50%;
+  -webkit-transition: -webkit-transform 1.3s ease-in-out;
+  transition: transform 1.3s ease-in-out;
+}
+
+.logo:hover {
+  -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
 }
 
 .button{

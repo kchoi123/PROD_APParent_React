@@ -1,10 +1,10 @@
 // make component a statefull component
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { CommentSubmitButton, CommentDisplay } from "../form";
 import moment from "moment"
 import API from "../../utils/API";
 import Linkify from 'react-linkify';
-import AnimatedPicture from "../Picture-Post";
+import PicturePost from "../Picture-Post";
 
 import "./style.css";
 
@@ -93,7 +93,7 @@ class PostCard extends Component {
             <div className="col">
               <div className="card-body post-content text-left">
                 <div className="wrapper-div">
-                  <img className="rounded-circle profile-icon mx-2" src={this.props.userPhoto} />
+                  <img className="rounded-circle profile-icon mx-2" alt={this.props.name} src={this.props.userPhoto} />
                   <div className="sub-div">
                     <p><b className="author">{this.props.name}</b> posted</p>
                     <p className="last-updated">{moment(this.props.updatedAt).fromNow()}</p>
@@ -105,9 +105,13 @@ class PostCard extends Component {
                 <hr />
                 <div className="mx-auto">
                   <p className="card-title mx-auto">{this.props.title}</p>
-                  <AnimatedPicture
-                    postPhoto={this.props.postPhoto}
-                  />
+                  {this.props.postPhoto ? (
+                    <PicturePost
+                      postPhoto={this.props.postPhoto}
+                    />
+                  ) : (
+                    ""
+                  )}
                   <Linkify>
                     <p className="card-text mx-auto text-justify" id="postCardDetails">
                       <b><u>Details:</u> </b>{this.props.description}
@@ -137,7 +141,7 @@ class PostCard extends Component {
         <div
           className="modal fade"
           id={"post" + this.props.postId}
-          tabindex="-1"
+          tabIndex="-1"
           role="dialog"
           aria-labelledby="exampleModalLongTitle"
           aria-hidden="true"
